@@ -13,13 +13,23 @@ import { LoginComponent } from '../login/login.component';
 export class HomePageComponent implements OnInit {
   public researchers: Researcher[] = [];
 
+  static _userId: any;
+
+  // public set id(value: number) {
+  //   this._userId = value;
+  // }
+
+  // public get id(): number {
+  //   return this._userId;
+  // }
+
   constructor(private researcherService: ResearcherService) {}
 
   active = 1;
 
   ngOnInit() {
     this.getResearchers();
-     }
+  }
 
   activeTab = 'search';
 
@@ -31,6 +41,10 @@ export class HomePageComponent implements OnInit {
     this.activeTab = activeTab;
   }
 
+  getUserId()
+  {
+    return HomePageComponent._userId;
+  }
 
   public getResearchers(): void {
     this.researcherService.getResearchers().subscribe(
@@ -43,7 +57,6 @@ export class HomePageComponent implements OnInit {
       }
     );
   }
-
 
   public getUserProfile(): void {
     this.researcherService.getUserProfile().subscribe(
@@ -61,6 +74,7 @@ export class HomePageComponent implements OnInit {
     console.log(key);
     const results: Researcher[] = [];
     for (const researcher of this.researchers) {
+      if (researcher.id != this.getUserId())
       if (
         researcher.name.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
         researcher.email.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||

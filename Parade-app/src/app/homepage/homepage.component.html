@@ -29,7 +29,7 @@
               <ng-template ngbNavContent>
                 <div class="row">
                   <div *ngFor="let researcher of researchers" class="col-md-12">
-                    <!-- <div *ngIf="researcher.id != getUserId()"> -->
+                    <div *ngIf="researcher.id != getUserId()">
                     <div class="search-item">
                       <div class="media"><img class="d-flex mr-3 rounded-circle"
                           src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
@@ -48,13 +48,13 @@
                       </div>
                     </div>
 
-                    
+
                     </div>
                     <!-- Angular 8 pagination -->
                     <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
                     <div class="clearfix"></div>
 
-                  <!-- </div> -->
+                  </div>
                 </div>
               </ng-template>
             </ng-container>

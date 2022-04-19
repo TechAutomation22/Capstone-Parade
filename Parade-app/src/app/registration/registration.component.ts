@@ -5,6 +5,7 @@ import { RegistrationService } from '../registration.service';
 import { Router } from '@angular/router';
 import { Researcher } from '../Researcher';
 import { HomePageComponent } from '../homepage/homepage.component';
+import { ResearcherService } from '../ResearcherService';
 
 @Component({
   selector: 'app-registration',
@@ -15,7 +16,6 @@ export class RegistrationComponent implements OnInit {
   user = new User();
   researcher = new Researcher();
   msg = '';
-  static userId: any;
 
   constructor(private _service: RegistrationService, private _router: Router) {}
 
@@ -28,6 +28,7 @@ export class RegistrationComponent implements OnInit {
       (data) => {
         this.researcher.email = data.emailId;
         this.researcher.id = data.id;
+        HomePageComponent._userId= data.id;
         this._service.AddResearcher(this.researcher).subscribe(
           (data) => {
             console.log('response received'), this._router.navigate(['']);
