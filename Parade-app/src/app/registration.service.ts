@@ -1,22 +1,32 @@
- import { Injectable } from '@angular/core';
+import { Researcher } from './Researcher';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from './user';
-import{HttpClient}from '@angular/common/http'
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RegistrationService {
+  constructor(private _http: HttpClient) {}
 
-  constructor(private _http: HttpClient) { }
-
-  public loginUserFromRemote(user:User):Observable<any>
-  {
-   return this._http.post<any>("http://localhost:8084/login", user)
+  public loginUserFromRemote(user: User): Observable<any> {
+    return this._http.post<any>('http://localhost:8084/login', user);
   }
 
-  public RegisterUserFromRemote(user:User):Observable<any>
-  {
-   return this._http.post<any>("http://localhost:8084/registeruser", user)
+  public getUserId(emailId?:string): Observable<any> {
+    return this._http.get<any>(`http://localhost:8084/user/{emailId}`);
+  }
+
+  public RegisterUserFromRemote(user: User): Observable<any> {
+    return this._http.post<any>('http://localhost:8084/registeruser', user);
+  }
+  public AddResearcher(researcher: Researcher): Observable<any> {
+    return this._http.post<any>(
+      'http://localhost:8084/Researcher/add',
+      researcher
+    );
+
+
   }
 }

@@ -2,6 +2,8 @@
 
 @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css';
 @import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css';
+@import '~bootstrap/dist/css/bootstrap.css';
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 body{
   margin-top:20px;
@@ -41,3 +43,6 @@ a {
 .btn-custom, .btn-danger, .btn-info, .btn-inverse, .btn-pink, .btn-primary, .btn-purple, .btn-success, .btn-warning {
   color: #fff!important;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

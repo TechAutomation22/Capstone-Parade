@@ -7,20 +7,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
-import { LoginsuccessComponent } from './loginsuccess/loginsuccess.component';
+import { HomePageComponent } from './homepage/homepage.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ConnectionComponent } from './connection/connection.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    LoginsuccessComponent
+    HomePageComponent,
+    ConnectionComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
