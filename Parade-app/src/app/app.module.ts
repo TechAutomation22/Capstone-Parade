@@ -12,6 +12,7 @@ import { HomePageComponent } from './homepage/homepage.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionComponent } from './connection/connection.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     AppRoutingModule,
     NgbModule,
     MatFormFieldModule,
-    MatChipsModule
+    MatChipsModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

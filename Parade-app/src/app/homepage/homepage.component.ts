@@ -1,69 +1,78 @@
 import { ResearcherService } from '../ResearcherService';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { Researcher } from '../Researcher';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RegistrationComponent } from '../registration/registration.component';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatChipInputEvent} from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatChipInputEvent } from '@angular/material/chips';
+
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css']
+  styleUrls: ['./homepage.component.css'],
 })
 export class HomePageComponent implements OnInit {
   public researchers: Researcher[] = [];
 
   static _userId: any;
 
-/*Set the values of these properties
+  public _myProfile = true;
+
+
+  p: number = 1;
+  count: number = 5;
+  pager: any = {};
+
+  /*Set the values of these properties
     to use them in the HTML view.*/
 
-    visible = true;
-    selectable = true;
-    removable = true;
+  visible = true;
+  selectable = true;
+  removable = true;
 
-    /*set the separator keys.*/
+  /*set the separator keys.*/
 
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   /*create the tags list.*/
 
-    Tags: string[] = [];
+  Tags: string[] = [];
 
   /*our custom add method which will take
       matChipInputTokenEnd event as input.*/
-    add(event: MatChipInputEvent): void {
+  add(event: MatChipInputEvent): void {
+    /*we will store the input and value in local variables.*/
 
-  /*we will store the input and value in local variables.*/
+    const input = event.input;
+    const value = event.value;
 
-      const input = event.input;
-      const value = event.value;
+    if ((value || '').trim()) {
+      /*the input string will be pushed to the tag list.*/
 
-      if ((value || '').trim()) {
-
-   /*the input string will be pushed to the tag list.*/
-
-        this.Tags.push(value);
-      }
-
-      if (input) {
-
-  /*after storing the input we will clear the input field.*/
-
-        input.value = '';
-      }
+      this.Tags.push(value);
     }
 
-    /*custom method to remove a tag.*/
+    if (input) {
+      /*after storing the input we will clear the input field.*/
+
+      input.value = '';
+    }
+  }
+
+  /*custom method to remove a tag.*/
 
   remove(tag: string): void {
     const index = this.Tags.indexOf(tag);
 
-    if (index >= 0)
-    {
-
-/*the tag of a particular index is removed from the tag list.*/
+    if (index >= 0) {
+      /*the tag of a particular index is removed from the tag list.*/
 
       this.Tags.splice(index, 1);
     }
@@ -87,8 +96,7 @@ export class HomePageComponent implements OnInit {
     this.activeTab = activeTab;
   }
 
-  getUserId()
-  {
+  getUserId() {
     return HomePageComponent._userId;
   }
 
@@ -116,20 +124,37 @@ export class HomePageComponent implements OnInit {
     );
   }
 
+  public Edit(): void {
+    this._myProfile = true;
+  }
+
+  public Save(): void {
+    this._myProfile = false;
+    this.researcherService.updateResearcher().subscribe(
+      (data) => {
+        console.log('response received');
+      },
+      (error) => {
+        console.log('exception occurred');
+      }
+    );
+  }
+
   public searchResearchers(key: string): void {
     console.log(key);
     const results: Researcher[] = [];
     for (const researcher of this.researchers) {
       if (researcher.id != this.getUserId())
-      if (
-        researcher.name.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
-        researcher.email.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
-        researcher.phone.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
-        researcher.expertise.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
-        researcher.jobTitle.toLowerCase().indexOf(key.toLowerCase()) !== -1
-      ) {
-        results.push(researcher);
-      }
+        if (
+          researcher.name.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
+          researcher.email.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
+          researcher.phone.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
+          researcher.expertise.toLowerCase().indexOf(key.toLowerCase()) !==
+            -1 ||
+          researcher.jobTitle.toLowerCase().indexOf(key.toLowerCase()) !== -1
+        ) {
+          results.push(researcher);
+        }
     }
     this.researchers = results;
     if (results.length === 0 || !key) {
@@ -157,4 +182,12 @@ export class HomePageComponent implements OnInit {
     // container.appendChild(button);
     button.click();
   }
+}
+function paginate(
+  length: number,
+  page: number,
+  pageSize: number,
+  maxPages: number
+): any {
+  throw new Error('Function not implemented.');
 }
