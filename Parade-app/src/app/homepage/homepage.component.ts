@@ -3,25 +3,71 @@ import { Component, OnInit } from '@angular/core';
 import { Researcher } from '../Researcher';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RegistrationComponent } from '../registration/registration.component';
-import { LoginComponent } from '../login/login.component';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css'],
+  styleUrls: ['./homepage.component.css']
 })
 export class HomePageComponent implements OnInit {
   public researchers: Researcher[] = [];
 
   static _userId: any;
 
-  // public set id(value: number) {
-  //   this._userId = value;
-  // }
+/*Set the values of these properties
+    to use them in the HTML view.*/
 
-  // public get id(): number {
-  //   return this._userId;
-  // }
+    visible = true;
+    selectable = true;
+    removable = true;
+
+    /*set the separator keys.*/
+
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  /*create the tags list.*/
+
+    Tags: string[] = [];
+
+  /*our custom add method which will take
+      matChipInputTokenEnd event as input.*/
+    add(event: MatChipInputEvent): void {
+
+  /*we will store the input and value in local variables.*/
+
+      const input = event.input;
+      const value = event.value;
+
+      if ((value || '').trim()) {
+
+   /*the input string will be pushed to the tag list.*/
+
+        this.Tags.push(value);
+      }
+
+      if (input) {
+
+  /*after storing the input we will clear the input field.*/
+
+        input.value = '';
+      }
+    }
+
+    /*custom method to remove a tag.*/
+
+  remove(tag: string): void {
+    const index = this.Tags.indexOf(tag);
+
+    if (index >= 0)
+    {
+
+/*the tag of a particular index is removed from the tag list.*/
+
+      this.Tags.splice(index, 1);
+    }
+  }
 
   constructor(private researcherService: ResearcherService) {}
 

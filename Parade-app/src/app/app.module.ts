@@ -1,3 +1,4 @@
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -10,6 +11,7 @@ import { RegistrationComponent } from './registration/registration.component';
 import { HomePageComponent } from './homepage/homepage.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionComponent } from './connection/connection.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,8 @@ import { ConnectionComponent } from './connection/connection.component';
     HttpClientModule,
     AppRoutingModule,
     NgbModule,
+    MatFormFieldModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

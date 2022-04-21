@@ -10,11 +10,32 @@
                   <form class="form-inline my-2 my-lg-0">
                     <input type="search" (ngModelChange)="searchResearchers(key.value)" #key="ngModel" ngModel
                       name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search" required>
+                    <mat-form-field class="input">
+                      <!--this contains the list of tags-->
+
+                      <mat-chip-list #taglist>
+                        <!--set the properties for the tags-->
+
+                        <mat-chip selected color="primary" *ngFor="let Tag of Tags" [selectable]="selectable"
+                          [removable]="removable" (removed)="remove(Tag)">
+                          {{Tag}}
+                          <!--add icon with matChipRemove
+                                       directive to remove any tag-->
+
+                          <mat-icon matChipRemove *ngIf="removable">-
+                          </mat-icon>
+                        </mat-chip>
+                        <input placeholder="Add Tags" [matChipInputFor]="taglist"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+                      </mat-chip-list>
+                    </mat-form-field>
                   </form>
                 </div>
               </div>
             </div>
           </div>
+
+
           <!-- end row -->
           <!-- <ul class="nav nav-tabs tabs-bordered"> -->
           <!-- <li class="nav-item"><a href="#home" data-toggle="tab" aria-expanded="true" class="nav-link ">All
@@ -29,26 +50,59 @@
               <ng-template ngbNavContent>
                 <div class="row">
                   <div *ngFor="let researcher of researchers" class="col-md-12">
+                    <!-- <div *ngFor="let tag of Tags" class="col-md-12"> -->
                     <div *ngIf="researcher.id != getUserId()">
-                    <div class="search-item">
-                      <div class="media"><img class="d-flex mr-3 rounded-circle"
-                          src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
-                          height="54">
-                        <div class="media-body">
-                          <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
-                          <p class="font-13"><b>Email:</b> <span><a href="#"
-                                class="text-muted">{{researcher?.email}}</a></span></p>
-                          <p class="mb-0 font-13"><b>Expertise:</b>
-                            <br><span class="text-muted">{{researcher?.expertise}}</span>
-                          </p>
-                          <div class="col-md-12 text-right">
-                            <button type="button" class="btn btn-primary">Connect</button>
+                      <div *ngIf="Tags.length ===0">
+                        <div class="search-item">
+                          <div class="media"><img class="d-flex mr-3 rounded-circle"
+                              src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
+                              height="54">
+                            <div class="media-body">
+                              <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
+                              <p class="font-13"><b>Email:</b> <span><a href="#"
+                                    class="text-muted">{{researcher?.email}}</a></span></p>
+                              <p class="mb-0 font-13"><b>Expertise:</b>
+                                <br><span class="text-muted">{{researcher?.expertise}}</span>
+                              </p>
+                              <div class="col-md-12 text-right">
+                                <button type="button" class="btn btn-primary">Connect</button>
+                              </div>
+                            </div>
                           </div>
                         </div>
+                        <!-- </div> -->
                       </div>
                     </div>
 
+                    <!-- Angular 8 pagination -->
+                    <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
+                    <div class="clearfix"></div>
 
+                  </div>
+                  <div *ngFor="let researcher of researchers" class="col-md-12">
+                    <div *ngFor="let tag of Tags" class="col-md-12">
+                      <div *ngIf="researcher.id != getUserId()">
+                        <div *ngIf="Tags.length !=0 && researcher.expertise.includes(tag)">
+                          <div class="search-item">
+                            <div class="media"><img class="d-flex mr-3 rounded-circle"
+                                src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
+                                height="54">
+                              <div class="media-body">
+                                <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a>
+                                </h5>
+                                <p class="font-13"><b>Email:</b> <span><a href="#"
+                                      class="text-muted">{{researcher?.email}}</a></span></p>
+                                <p class="mb-0 font-13"><b>Expertise:</b>
+                                  <br><span class="text-muted">{{researcher?.expertise}}</span>
+                                </p>
+                                <div class="col-md-12 text-right">
+                                  <button type="button" class="btn btn-primary">Connect</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <!-- Angular 8 pagination -->
                     <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
@@ -56,6 +110,7 @@
 
                   </div>
                 </div>
+
               </ng-template>
             </ng-container>
             <ng-container ngbNavItem>
@@ -119,8 +174,12 @@
                       <div class="p-3 py-5">
                         <div class="col-md-12"><label class="labels">Expertise</label><input [disabled]="true"
                             type="text" class="form-control" placeholder="add expertise" value=""></div> <br>
-                        <div class="col-md-12"><label class="labels">Looking For</label><input [disabled]="true"
-                            type="text" class="form-control" placeholder="looking for" value=""></div>
+                            <div class="col-md-12"><label class="labels">Looking For</label></div><br>
+                            <input placeholder="Example: Data Mining" [matChipInputFor]="taglist"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+                            <div *ngFor="let tag of Tags" class="col-md-12">
+                              <div class="col-md-12"><label class="labels">{{tag}}</label></div><br>
+                              </div>
                         <div class="form-group"><br>
                           <div class="col-md-12"><label class="labels">About me</label></div><br>
                           <div class="col-md-12">
