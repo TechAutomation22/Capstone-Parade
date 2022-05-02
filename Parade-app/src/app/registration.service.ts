@@ -14,8 +14,12 @@ export class RegistrationService {
     return this._http.post<any>('http://localhost:8084/login', user);
   }
 
-  public getUserId(emailId?:string): Observable<any> {
-    return this._http.get<any>(`http://localhost:8084/user/{emailId}`);
+  public getUserId(emailId: string): Observable<any> {
+    return this._http.get<any>(`http://localhost:8084/user/`+ emailId);
+  }
+
+  public getResearcherById(Id: number): Observable<any> {
+    return this._http.get<any>(`http://localhost:8084/Researcher/find/`+ Id);
   }
 
   public RegisterUserFromRemote(user: User): Observable<any> {
@@ -26,7 +30,5 @@ export class RegistrationService {
       'http://localhost:8084/Researcher/add',
       researcher
     );
-
-
   }
 }

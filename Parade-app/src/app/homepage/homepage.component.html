@@ -1,3 +1,24 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- Navbar brand -->
+    <a class="navbar-brand nav-link" target="_blank" href="https://mdbootstrap.com/docs/standard/">
+      <strong>PARADE</strong>
+
+    </a>
+
+
+    <!--<button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarExample01"
+        aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>-->
+
+
+    <a href="http://localhost:4200" onclick="document.getElementById('id01').style.display='block'"
+      class="w3-bar-item w3-button w3-padding" ng-if="!loggedin"><i
+        class="fa fa-user fa-fw w3-margin-right"></i>LOGOUT</a>
+
+  </div>
+</nav>
 <div class="content">
   <div class="container">
     <div class="row">
@@ -10,6 +31,9 @@
                   <form class="form-inline my-2 my-lg-0">
                     <input type="search" (ngModelChange)="searchResearchers(key.value)" #key="ngModel" ngModel
                       name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search" required>
+                      <p> &emsp;Add Filter&emsp;</p>
+                      <p></p>
+                      <p></p>
                     <mat-form-field class="input">
                       <!--this contains the list of tags-->
 
@@ -46,30 +70,106 @@
                 Connections <span class="badge badge-danger ml-1">89</span></a></li> -->
           <nav ngbNav #nav="ngbNav" class="nav-tabs">
             <ng-container ngbNavItem>
-              <a ngbNavLink>All Users</a>
+              <a ngbNavLink>My Profile</a>
+              <ng-template ngbNavContent>
+                <div class="container rounded bg-white mt-5 mb-5">
+                  <form class="bg-white  rounded-5 shadow-5-strong p-5" #myprofile="ngForm" (ngSubmit)="Save()">
+                    <div class="row">
+                      <div class="col-md-3 border-right">
+                        <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
+                            class="rounded-circle mt-5" src="assets/images.png"><span
+                            class="font-weight-bold">{{currentUserName}}</span><span
+                            class="text-black-50">{{currentUserEmail}}</span><span> </span></div>
+                      </div>
+                      <div class="col-md-5 border-right">
+                        <div class="p-3 py-5">
+                          <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="text-right">Profile Settings</h4>
+                          </div>
+                          <div class="row mt-2">
+                            <div class="col-md-8"><label class="labels">Name</label><input [(ngModel)]="researcher.name"
+                                type="text" class="form-control" placeholder={{currentUserName}} name="firstName"></div>
+                          </div>
+                          <div class="row mt-3">
+                            <div class="col-md-8"><label class="labels">PhoneNumber</label><input
+                                [(ngModel)]="researcher.phone" type="text" class="form-control"
+                                placeholder={{currentUserPhoneNumber}} name="phone"></div>
+                            <div class="row mt-4">
+                              <div class="col-md-9"><label class="labels">Email ID</label><input [disabled]="true"
+                                  type="text" class="form-control" placeholder="{{currentUserEmail}}"
+                                  value={{currentUserEmail}}></div>
+                            </div>
+                          </div>
+                          <div class="mt-5 text-left"> <button type="submit"
+                              class="btn btn-primary profile-button">save</button></div>
+                        </div>
+                        <div></div>
+                        <script>
+                          var myApp = angular.module('myApp', []);
+
+                          myApp.controller('myController',
+                            function ($scope) {
+
+                              // THIS IS DEFAULT. IF YOU DO NOT DEFINE IT, IT REMAINS 'false'.
+                              $scope.isDisabled = false;
+
+                              $scope.save = function () {
+                                console.log('Data Saved.');
+                                $scope.isDisabled = true;
+                              };
+                            });
+                        </script>
+                      </div>
+                      <div class="col-md-4">
+                        <br class="p-3 py-5">
+                        <div class="col-md-12"><label class="labels">Expertise</label><input
+                            [(ngModel)]="researcher.expertise" type="text" class="form-control"
+                            placeholder="{{currentUserExpertise}}" name="expertise"></div> <br>
+                        <div class="col-md-12"><label class="labels">Looking For</label></div><br>
+                        <div class="col-md-12"><input placeholder="Example: Data Mining" [matChipInputFor]="taglist"
+                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" /></div>
+                        <div *ngFor="let tag of Tags" class="col-md-12">
+                          <div class="col-md-12"><label class="labels">{{tag}}</label></div><br>
+                        </div><br><br>
+
+                        <div class="col-md-12"><label class="labels">About me</label><input
+                            [(ngModel)]="researcher.about" type="text" class="form-control"
+                            placeholder="{{currentUserAboutMe}}" name="about">
+
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+              </ng-template>
+            </ng-container>
+            <ng-container ngbNavItem>
+              <a ngbNavLink>Find Connections</a>
               <ng-template ngbNavContent>
                 <div class="row">
-                  <div *ngFor="let researcher of researchers | paginate: { itemsPerPage: count, currentPage: p }" class="col-md-12">
+                  <div *ngFor="let researcher of researchers | paginate: { itemsPerPage: count, currentPage: p }"
+                    class="col-md-12">
                     <!-- <div *ngFor="let tag of Tags" class="col-md-12"> -->
-                    <div *ngIf="researcher.id != getUserId()">
-                      <div *ngIf="Tags.length ===0">
-                        <div class="search-item">
-                          <div class="media"><img class="d-flex mr-3 rounded-circle"
-                              src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
-                              height="54">
-                            <div class="media-body">
-                              <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
-                              <p class="font-13"><b>Email:</b> <span><a href="#"
-                                    class="text-muted">{{researcher?.email}}</a></span></p>
-                              <p class="mb-0 font-13"><b>Expertise:</b>
-                                <br><span class="text-muted">{{researcher?.expertise}}</span>
-                              </p>
-                              <div class="col-md-12 text-right">
-                                <button type="button" class="btn btn-primary">Connect</button>
-                              </div>
+
+                    <div *ngIf="Tags.length ===0">
+                      <div class="search-item">
+                        <div class="media"><img class="d-flex mr-3 rounded-circle"
+                            src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
+                            height="54">
+                          <div class="media-body">
+                            <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
+                            <p class="font-13"><b>Email:</b> <span><a href="#"
+                                  class="text-muted">{{researcher?.email}}</a></span></p>
+                            <p class="mb-0 font-13"><b>Expertise:</b>
+                              <br><span class="text-muted">{{researcher?.expertise}}</span>
+                            </p>
+                            <div class="col-md-12 text-right">
+                              <button type="button" class="btn btn-primary" >Connect</button>
                             </div>
                           </div>
                         </div>
+
                         <!-- </div> -->
                       </div>
                     </div>
@@ -79,25 +179,24 @@
                     <div class="clearfix"></div>
 
                   </div>
-                  <div *ngFor="let researcher of researchers | paginate: { itemsPerPage: count, currentPage: p }" class="col-md-12">
+                  <div *ngFor="let researcher of researchers | paginate: { itemsPerPage: count, currentPage: p }"
+                    class="col-md-12">
                     <div *ngFor="let tag of Tags" class="col-md-12">
-                      <div *ngIf="researcher.id != getUserId()">
-                        <div *ngIf="Tags.length !=0 && researcher.expertise.includes(tag)">
-                          <div class="search-item">
-                            <div class="media"><img class="d-flex mr-3 rounded-circle"
-                                src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
-                                height="54">
-                              <div class="media-body">
-                                <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a>
-                                </h5>
-                                <p class="font-13"><b>Email:</b> <span><a href="#"
-                                      class="text-muted">{{researcher?.email}}</a></span></p>
-                                <p class="mb-0 font-13"><b>Expertise:</b>
-                                  <br><span class="text-muted">{{researcher?.expertise}}</span>
-                                </p>
-                                <div class="col-md-12 text-right">
-                                  <button type="button" class="btn btn-primary">Connect</button>
-                                </div>
+                      <div *ngIf="Tags.length !=0 && researcher.expertise.includes(tag)">
+                        <div class="search-item">
+                          <div class="media"><img class="d-flex mr-3 rounded-circle"
+                              src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
+                              height="54">
+                            <div class="media-body">
+                              <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a>
+                              </h5>
+                              <p class="font-13"><b>Email:</b> <span><a href="#"
+                                    class="text-muted">{{researcher?.email}}</a></span></p>
+                              <p class="mb-0 font-13"><b>Expertise:</b>
+                                <br><span class="text-muted">{{researcher?.expertise}}</span>
+                              </p>
+                              <div class="col-md-12 text-right">
+                                <button type="button" class="btn btn-primary">Connect</button>
                               </div>
                             </div>
                           </div>
@@ -116,86 +215,7 @@
 
               </ng-template>
             </ng-container>
-            <ng-container ngbNavItem>
-              <a ngbNavLink>My Profile</a>
-              <ng-template ngbNavContent>
-                <div class="container rounded bg-white mt-5 mb-5">
-                  <div class="row">
-                    <div class="col-md-3 border-right">
-                      <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img
-                          class="rounded-circle mt-5" src=""><span class="font-weight-bold">Amelly</span><span
-                          class="text-black-50">amelly12@bbb.com</span><span> </span></div>
-                    </div>
-                    <div class="col-md-5 border-right">
-                      <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                          <h4 class="text-right">Profile Settings</h4>
-                        </div>
-                        <div class="row mt-2">
-                          <div class="col-md-6"><label class="labels">Name</label><input [disabled]="true" type="text"
-                              class="form-control" placeholder="first name" value=""></div>
 
-                        </div>
-                        <div class="row mt-3">
-                          <div class="col-md-12"><label class="labels">PhoneNumber</label><input [disabled]="true"
-                              type="text" class="form-control" placeholder="enter phone number" value=""></div>
-                          <div class="col-md-12"><label class="labels">Address</label><input [disabled]="true"
-                              type="text" class="form-control" placeholder="enter address" value=""></div>
-                          <div class="col-md-12"><label class="labels">Email ID</label><input [disabled]="true"
-                              type="text" class="form-control" placeholder="enter email" value=""></div>
-                          <div class="col-md-12"><label class="labels">Education</label><input [disabled]="true"
-                              type="text" class="form-control" placeholder="education" value=""></div>
-                        </div>
-                        <div class="row mt-3">
-                          <div class="col-md-6"><label class="labels">Country</label><input [disabled]="true"
-                              type="text" class="form-control" placeholder="country" value=""></div>
-                          <div class="col-md-6"><label class="labels">State/Region</label><input [disabled]="true"
-                              type="text" class="form-control" value="" placeholder="state"></div>
-                        </div>
-                        <div class="mt-5 text-left"><button class="btn btn-primary profile-button" type="submit"
-                            ng-disabled="isDisabled" ng-click="edit()">Edit Profile</button></div>
-                        <div class="mt-5 text-left"><button class="btn btn-primary profile-button" type="submit"
-                            ng-disabled="isDisabled" ng-click="save()">Save Profile</button></div>
-                      </div>
-                      <script>
-                        var myApp = angular.module('myApp', []);
-
-                        myApp.controller('myController',
-                          function ($scope) {
-
-                            // THIS IS DEFAULT. IF YOU DO NOT DEFINE IT, IT REMAINS 'false'.
-                            $scope.isDisabled = false;
-
-                            $scope.save = function () {
-                              console.log('Data Saved.');
-                              $scope.isDisabled = true;
-                            };
-                          });
-                      </script>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="p-3 py-5">
-                        <div class="col-md-12"><label class="labels">Expertise</label><input [disabled]="true"
-                            type="text" class="form-control" placeholder="add expertise" value=""></div> <br>
-                            <div class="col-md-12"><label class="labels">Looking For</label></div><br>
-                            <input placeholder="Example: Data Mining" [matChipInputFor]="taglist"
-                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
-                            <div *ngFor="let tag of Tags" class="col-md-12">
-                              <div class="col-md-12"><label class="labels">{{tag}}</label></div><br>
-                              </div>
-                        <div class="form-group"><br>
-                          <div class="col-md-12"><label class="labels">About me</label></div><br>
-                          <div class="col-md-12">
-                            <textarea [disabled]="true" class="form-control" rows="5" placeholder="About me"></textarea>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </ng-template>
-            </ng-container>
             <ng-container ngbNavItem>
               <a ngbNavLink>My Connections</a>
               <ng-template ngbNavContent>
@@ -224,4 +244,5 @@
               </ng-template>
             </ng-container>
           </nav>
+
           <div [ngbNavOutlet]="nav" class="mt-2"></div>

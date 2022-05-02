@@ -17,6 +17,7 @@ export class RegistrationComponent implements OnInit {
   researcher = new Researcher();
   msg = '';
 
+
   constructor(private _service: RegistrationService, private _router: Router) {}
 
   ngOnInit(): void {}
@@ -31,7 +32,7 @@ export class RegistrationComponent implements OnInit {
         HomePageComponent._userId= data.id;
         this._service.AddResearcher(this.researcher).subscribe(
           (data) => {
-            console.log('response received'), this._router.navigate(['']);
+            console.log('response received'),  (this.msg = "Your Registration is Successful, Email Verification has been sent to " + this.researcher.email);
           },
           (error) => {
             console.log('exception occurred'), (this.msg = error.error);

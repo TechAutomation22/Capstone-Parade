@@ -64,7 +64,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark d-none d-lg-block" style="z-index: 2000;">
     <div class="container-fluid">
       <!-- Navbar brand -->
-      <a class="navbar-brand nav-link" target="_blank" href="https://mdbootstrap.com/docs/standard/">
+      <a class="navbar-brand nav-link" target="_blank" >
         <strong>PARADE</strong>
       </a>
       <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarExample01"
@@ -74,11 +74,10 @@
       <div class="collapse navbar-collapse" id="navbarExample01">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item active">
-            <a class="nav-link" aria-current="page" href="#intro">Home</a>
+            <!-- <a class="nav-link" aria-current="page" href="#intro">Login</a> -->
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" rel="nofollow"
-              target="_blank">About</a>
+            <a class="nav-link" aria-current="page" href="#About">About</a>
           </li>
         </ul>
       </div>
@@ -94,7 +93,9 @@
           <div class="col-xl-5 col-md-8">
             <form class="bg-white  rounded-5 shadow-5-strong p-5" #loginform="ngForm" (ngSubmit)="LoginUser()">
               <!-- Email input -->
+              <p style="text-align:center " ><img class="mrg-B15 " height="50px"  src="assets/uhcl.png"></p>
               <div class="form-outline mb-4">
+                <!-- <br><label class="form-label" ><h4><b>User Name:</b></h4></label> -->
                 <input type="email" class="form-control" id="email" placeholder="Enter email" name="email"
                 [(ngModel)]="user.emailId" required #email="ngModel" [class.is-invalid]="email.invalid && email.touched">
               <div *ngIf="email.errors && (email.invalid && email.touched)">
@@ -105,6 +106,7 @@
 
               <!-- Password input -->
               <div class="form-outline mb-4">
+                <!-- <br><label class="form-label" ><h4 ><b>Password:</b></h4></label> -->
                 <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd"
                 [(ngModel)]="user.password" required #pwd="ngModel" [class.is-invalid]="pwd.invalid && pwd.touched">
               <div *ngIf="pwd.errors && (pwd.invalid && pwd.touched)">
@@ -128,7 +130,7 @@
                 <div class="col text-center">
                   <!-- Simple link -->
                   <!-- <a href="#!">First Time User?</a> -->
-                  <small class="float-right" (click)="gotoregistration()"> First Time User</small>
+                  <div class="float-right" (click)="gotoregistration()"> First Time User</div>
                 </div>
               </div>
 
@@ -142,5 +144,58 @@
     </div>
   </div>
   <!-- Background image -->
+  <div id="About" >
+  <div ng-if="showcontent==6" class="w3-main w3-animate-zoom" style="margin-left:300px;padding:10px">
+
+    <header id="portfolio">
+      <div class="w3-container">
+        <h1><b>About Us</b></h1>
+      </div>
+    </header>
+
+
+      <div class="w3-row-padding">
+        <h3>Outline</h3>
+        <p> The current article management and research system can be complicated and requires a lot of bureaucracy. It is
+          a complicated process and costs much time and resources for researchers. Article Management can be used to
+          potentially improve the transparency of those systems and make end to- end t trans-discipline research easily
+          done online. The platform should require fewer Intermediaries such as general Users and Account user.</p>
+
+      </div>
+
+      <hr>
+
+      <div class="w3-row-padding">
+        <h3>Scope</h3>
+        <p>Our project presents heading for the advancement of various discipline. It likewise shows its ID elements,
+          assets, and shortcomings, as well as the critical job trans-disciplinarily plays in science and schooling. The
+          strategy utilized in our application is a substance investigation of goals The ensuing utilization of
+          distributed articles by different writers in this manner represented a few ambiguities about the spot and job of
+          trans disciplinarily in science and instruction. The coming of e-data sets can has made it conceivable to get to
+          the first discussion articles. This further made it conceivable to refine the first substance of the expression
+          "trans-disciplinarily" and to follow its advancement without blending it in with unclear feelings. These
+          directions have individual objectives and goals. The trans-disciplinarily of logical examination assists with
+          finishing the change of the potential for interdisciplinary collaboration and the mix of disciplines</p>
+
+      </div>
+      <hr>
+      <div class="w3-row-padding">
+        <h3>Proposed Solution</h3>
+        <p> We propose an Article Management System which is an online platform for researcher’s process that articles
+          with the general operational exercises and procedures, beginning from the administration of the content, to the
+          administration of trans-discipline, researchers. It gives far-reaching reports to dealing with trans- discipline
+          articles and effectiveness and empowers the administration for a better dynamic. As proof of concept, we will be
+          building up an application with insignificant highlights of referenced previously. Prototype consists of
+          Intermediaries of content sharing. By doing so, trans-discipline research can be made with more transparency and
+          reduces lots of manual and paper work. All the records will be easy to maintain.</p>
+
+      </div>
+
+      <footer class="w3-container w3-black">
+        <p style="text-align: center"></p><h5>Designed by UHCL</h5>
+
+      </footer>
+    </div>
+    </div>
 </header>
 <!--Main Navigation-->

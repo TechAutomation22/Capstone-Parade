@@ -11,7 +11,8 @@ import { Researcher } from '../Researcher';
 import { HttpErrorResponse } from '@angular/common/http';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-
+import { LoginComponent } from '../login/login.component';
+import { RegistrationService } from '../registration.service';
 
 @Component({
   selector: 'app-homepage',
@@ -21,10 +22,84 @@ import { MatChipInputEvent } from '@angular/material/chips';
 export class HomePageComponent implements OnInit {
   public researchers: Researcher[] = [];
 
-  static _userId: any;
+  static _userId = 1;
+  static currentUserEmail = '';
+  msg = '';
+  someSubscription: any;
 
-  public _myProfile = true;
+  static myProfile = true;
+  static currentUserName: string;
+  static currentUserPhoneNumber: string;
+  static currentUserEmailID: string;
+  static currentUserExpertise: string;
+  static currentUserAboutMe: string;
+  static currentUserID: number;
+   researcher = new Researcher();
+  currentResearcher = new Researcher();
 
+  HomePageComponent() {}
+
+  constructor(
+    private researcherService: ResearcherService,
+    private registrationService: RegistrationService
+  ) {}
+
+  get currentUserEmail() {
+    return HomePageComponent.currentUserEmail;
+  }
+
+  set currentUserEmail(email) {
+    this.currentUserEmail = email;
+  }
+
+
+  get currentUserID() {
+    return HomePageComponent.currentUserID;
+  }
+
+  set currentUserID(Id) {
+    this.currentUserID = Id;
+  }
+
+  get currentUserName() {
+    return HomePageComponent.currentUserName;
+  }
+
+  set currentUserName(userName) {
+    this.currentUserName = userName;
+  }
+
+  get currentUserPhoneNumber() {
+    return HomePageComponent.currentUserPhoneNumber;
+  }
+
+  set currentUserPhoneNumber(phoneNumber) {
+    this.currentUserName = phoneNumber;
+  }
+
+  get currentUserAboutMe() {
+    return HomePageComponent.currentUserAboutMe;
+  }
+
+  set currentUserAboutMe(aboutMe) {
+    this.currentUserAboutMe = aboutMe;
+  }
+
+  get currentUserExpertise() {
+    return HomePageComponent.currentUserExpertise;
+  }
+
+  set currentUserExpertise(expertise) {
+    this.currentUserExpertise = expertise;
+  }
+
+  get myProfile() {
+    return this.myProfile;
+  }
+
+  set myProfile(profileState) {
+    this.myProfile = profileState;
+  }
 
   p: number = 1;
   count: number = 5;
@@ -78,8 +153,6 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  constructor(private researcherService: ResearcherService) {}
-
   active = 1;
 
   ngOnInit() {
@@ -94,10 +167,6 @@ export class HomePageComponent implements OnInit {
 
   result(activeTab: string) {
     this.activeTab = activeTab;
-  }
-
-  getUserId() {
-    return HomePageComponent._userId;
   }
 
   public getResearchers(): void {
@@ -125,42 +194,62 @@ export class HomePageComponent implements OnInit {
   }
 
   public Edit(): void {
-    this._myProfile = true;
+    HomePageComponent.myProfile = true;
   }
 
   public Save(): void {
-    this._myProfile = false;
-    this.researcherService.updateResearcher().subscribe(
-      (data) => {
-        console.log('response received');
-      },
-      (error) => {
-        console.log('exception occurred');
-      }
-    );
+    console.log('inside save');
+    console.log(HomePageComponent.currentUserEmail);
+    this.registrationService
+      .getUserId(HomePageComponent.currentUserEmail)
+      .subscribe(
+        (data) => {
+          this.researcher.id = data;
+          this.researcher.email = this.currentUserEmail
+          this.researcherService.updateResearcher(this.researcher).subscribe(
+            (data) => {
+              console.log('response received');
+              (this.msg = "Your information has been saved");
+            },
+            (error) => {
+              console.log('exception occurred');
+              (this.msg = "Error Occurred while processing your request Please contact your administrator");
+            }
+          );
+          console.log('response received');
+        },
+        (error) => {
+          console.log('exception occurred');
+        }
+      );
+
+
+
+    HomePageComponent.myProfile = false;
   }
 
   public searchResearchers(key: string): void {
     console.log(key);
+
     const results: Researcher[] = [];
     for (const researcher of this.researchers) {
-      if (researcher.id != this.getUserId())
-        if (
-          researcher.name.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
-          researcher.email.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
-          researcher.phone.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
-          researcher.expertise.toLowerCase().indexOf(key.toLowerCase()) !==
-            -1 ||
-          researcher.jobTitle.toLowerCase().indexOf(key.toLowerCase()) !== -1
-        ) {
-          results.push(researcher);
-        }
+      if (
+        researcher.name.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
+        researcher.email.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
+        researcher.phone.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
+        researcher.expertise.toLowerCase().indexOf(key.toLowerCase()) !== -1 ||
+        researcher.jobTitle.toLowerCase().indexOf(key.toLowerCase()) !== -1
+      ) {
+        results.push(researcher);
+      }
     }
     this.researchers = results;
     if (results.length === 0 || !key) {
       this.getResearchers();
     }
   }
+
+
 
   public onOpenModal(reseacher: Researcher, mode: string): void {
     const container = document.getElementById('main-container');
