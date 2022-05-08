@@ -12,8 +12,8 @@ export class ResearcherService {
   public getResearchers(): Observable<Researcher[]> {
     return this.http.get<Researcher[]>(`http://localhost:8084/Researcher/all`);
   }
-  public getUserProfile(): Observable<Researcher[]> {
-    return this.http.get<Researcher[]>(`http://localhost:8084/Researcher/find/{id}`);
+  public getUserProfile(id): Observable<Researcher[]> {
+    return this.http.get<Researcher[]>(`http://localhost:8084/Researcher/find/`+id);
   }
 
   public updateResearcher(researcher: Researcher): Observable<Researcher[]> {

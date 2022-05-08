@@ -1,4 +1,5 @@
 import { ResearcherService } from '../ResearcherService';
+import {Connection} from '../Connection';
 import {
   Component,
   EventEmitter,
@@ -13,6 +14,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { LoginComponent } from '../login/login.component';
 import { RegistrationService } from '../registration.service';
+import { Router } from '@angular/router';
+import { ConnectionService } from '../ConnectionService';
 
 @Component({
   selector: 'app-homepage',
@@ -20,29 +23,38 @@ import { RegistrationService } from '../registration.service';
   styleUrls: ['./homepage.component.css'],
 })
 export class HomePageComponent implements OnInit {
+
   public researchers: Researcher[] = [];
+  public connections: Connection[] = [];
 
   static _userId = 1;
-  static currentUserEmail = '';
+  static currentUserEmail : string;
   msg = '';
   someSubscription: any;
 
   static myProfile = true;
   static currentUserName: string;
   static currentUserPhoneNumber: string;
-  static currentUserEmailID: string;
+  static currentUserEmailID: any;
   static currentUserExpertise: string;
   static currentUserAboutMe: string;
-  static currentUserID: number;
-   researcher = new Researcher();
+  static currentUserID: any;
+  researcher = new Researcher();
   currentResearcher = new Researcher();
+  connection = new Connection();
+
+
+
+
 
   HomePageComponent() {}
 
   constructor(
     private researcherService: ResearcherService,
-    private registrationService: RegistrationService
-  ) {}
+    private registrationService: RegistrationService,
+    private connectionService: ConnectionService,
+    private _router: Router
+  ) { }
 
   get currentUserEmail() {
     return HomePageComponent.currentUserEmail;
@@ -94,7 +106,7 @@ export class HomePageComponent implements OnInit {
   }
 
   get myProfile() {
-    return this.myProfile;
+    return HomePageComponent.myProfile;
   }
 
   set myProfile(profileState) {
@@ -155,9 +167,16 @@ export class HomePageComponent implements OnInit {
 
   active = 1;
 
+
+
   ngOnInit() {
     this.getResearchers();
-  }
+    this.getConnections();
+    console.log('Refresh--->' + localStorage.getItem('_userEmail'))
+        this.getUserProfile();
+        HomePageComponent.currentUserID = localStorage.getItem('_id');
+        console.log('CurrentID--->' + HomePageComponent.currentUserID)
+    }
 
   activeTab = 'search';
 
@@ -181,11 +200,43 @@ export class HomePageComponent implements OnInit {
     );
   }
 
+   //userEmail = JSON.parse(localStorage.getItem('_userEmail')!);;
+
   public getUserProfile(): void {
-    this.researcherService.getUserProfile().subscribe(
-      (response: Researcher[]) => {
-        this.researchers = response;
-        console.log(this.researchers);
+    this.registrationService.getUserId(localStorage.getItem('_userEmail'))
+         .subscribe(
+           (data) => {
+            this.registrationService.getResearcherById(data).subscribe(
+            (data) => {
+              console.log("Vignesh Chandranbalan");
+              HomePageComponent.currentUserEmail = data.email;
+              HomePageComponent.currentUserAboutMe = data.about;
+              HomePageComponent.currentUserExpertise = data.expertise;
+              HomePageComponent.currentUserPhoneNumber = data.phone;
+              HomePageComponent.currentUserName = data.name;
+              HomePageComponent.currentUserEmail = data.email;
+            },
+            (error) => {
+              console.log('exception occurred');
+            }
+          );
+          console.log('response received');
+        },
+        (error) => {
+          console.log('exception occurred');
+        });
+  }
+
+  public Edit(): void {
+    console.log('inside this function');
+    HomePageComponent.myProfile = false;
+  }
+
+  public getConnections(): void {
+    this.connectionService.getConnections().subscribe(
+      (response: Connection[]) => {
+        this.connections = response;
+        console.log(this.connections);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -193,9 +244,6 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  public Edit(): void {
-    HomePageComponent.myProfile = true;
-  }
 
   public Save(): void {
     console.log('inside save');
@@ -210,10 +258,11 @@ export class HomePageComponent implements OnInit {
             (data) => {
               console.log('response received');
               (this.msg = "Your information has been saved");
+              HomePageComponent.myProfile=true;
             },
             (error) => {
               console.log('exception occurred');
-              (this.msg = "Error Occurred while processing your request Please contact your administrator");
+              (this.msg = "Invalid Phone number");
             }
           );
           console.log('response received');
@@ -247,6 +296,10 @@ export class HomePageComponent implements OnInit {
     if (results.length === 0 || !key) {
       this.getResearchers();
     }
+  }
+
+  gotoregistration() {
+    this._router.navigate(['/viewprofile']);
   }
 
 

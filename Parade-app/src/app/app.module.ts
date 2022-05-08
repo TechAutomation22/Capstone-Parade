@@ -13,6 +13,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConnectionComponent } from './connection/connection.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ViewprofileComponent } from './viewprofile/viewprofile.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     LoginComponent,
     RegistrationComponent,
     HomePageComponent,
-    ConnectionComponent
+    ConnectionComponent,
+    ViewprofileComponent
   ],
   imports: [
     BrowserModule,

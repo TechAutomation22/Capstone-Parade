@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { LoginComponent } from './login/login.component';
 import { HomePageComponent } from './homepage/homepage.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { ViewprofileComponent } from './viewprofile/viewprofile.component';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'homepage', component: HomePageComponent },
   { path: '', component: RegistrationComponent },
   { path: 'registration', component: RegistrationComponent },
+  { path: 'viewprofile/:id/:actionType', component: ViewprofileComponent },
 ];
 
 @NgModule({

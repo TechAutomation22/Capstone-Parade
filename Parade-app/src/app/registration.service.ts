@@ -14,7 +14,7 @@ export class RegistrationService {
     return this._http.post<any>('http://localhost:8084/login', user);
   }
 
-  public getUserId(emailId: string): Observable<any> {
+  public getUserId(emailId: any): Observable<any> {
     return this._http.get<any>(`http://localhost:8084/user/`+ emailId);
   }
 

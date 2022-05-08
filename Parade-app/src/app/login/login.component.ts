@@ -46,6 +46,8 @@ export class LoginComponent implements OnInit {
               HomePageComponent.currentUserPhoneNumber = data.phone;
               HomePageComponent.currentUserName = data.name;
               HomePageComponent.currentUserEmail = data.email;
+              localStorage.setItem('_userEmail', data.email)
+              localStorage.setItem('_id', data.id)
             },
             (error) => {
               console.log('exception occurred');

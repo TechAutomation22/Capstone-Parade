@@ -31,9 +31,9 @@
                   <form class="form-inline my-2 my-lg-0">
                     <input type="search" (ngModelChange)="searchResearchers(key.value)" #key="ngModel" ngModel
                       name="key" id="searchName" class="form-control mr-sm-2" placeholder="Search" required>
-                      <p> &emsp;Add Filter&emsp;</p>
-                      <p></p>
-                      <p></p>
+                    <p> &emsp;Add Filter&emsp;</p>
+                    <p></p>
+                    <p></p>
                     <mat-form-field class="input">
                       <!--this contains the list of tags-->
 
@@ -88,20 +88,28 @@
                           </div>
                           <div class="row mt-2">
                             <div class="col-md-8"><label class="labels">Name</label><input [(ngModel)]="researcher.name"
-                                type="text" class="form-control" placeholder={{currentUserName}} name="firstName"></div>
+                                required #name="ngModel" type="text" class="form-control"
+                                placeholder={{currentUserName}} name="firstName" [disabled]=myProfile></div>
                           </div>
                           <div class="row mt-3">
-                            <div class="col-md-8"><label class="labels">PhoneNumber</label><input
-                                [(ngModel)]="researcher.phone" type="text" class="form-control"
-                                placeholder={{currentUserPhoneNumber}} name="phone"></div>
+                            <div class="col-md-8"><label class="labels">PhoneNumber</label><input [disabled]=myProfile
+                                [(ngModel)]="researcher.phone" required #phone="ngModel" type="text"
+                                class="form-control" placeholder={{currentUserPhoneNumber}} name="phone"
+                                [disabled]="true"></div>
+                            <small password class="text-danger" *ngIf="phone.errors?.['pattern']">Phone is required
+                              field</small>
                             <div class="row mt-4">
-                              <div class="col-md-9"><label class="labels">Email ID</label><input [disabled]="true"
+                              <div class="col-md-9"><label class="labels">Email ID</label><input [disabled]=true
                                   type="text" class="form-control" placeholder="{{currentUserEmail}}"
                                   value={{currentUserEmail}}></div>
                             </div>
                           </div>
+                          <div class="mt-5 text-left"> <button type="button" class="btn btn-primary profile-button"
+                              (click)="Edit()">edit</button></div>
                           <div class="mt-5 text-left"> <button type="submit"
-                              class="btn btn-primary profile-button">save</button></div>
+                              class="btn btn-primary profile-button">save</button> <br>
+                            <small class="text-danger">{{msg}}</small>
+                          </div>
                         </div>
                         <div></div>
                         <script>
@@ -123,23 +131,26 @@
                       <div class="col-md-4">
                         <br class="p-3 py-5">
                         <div class="col-md-12"><label class="labels">Expertise</label><input
-                            [(ngModel)]="researcher.expertise" type="text" class="form-control"
-                            placeholder="{{currentUserExpertise}}" name="expertise"></div> <br>
+                            [(ngModel)]="researcher.expertise" required #expertise="ngModel" type="text"
+                            class="form-control" placeholder="{{currentUserExpertise}}" name="expertise"
+                            [disabled]=myProfile></div> <br>
                         <div class="col-md-12"><label class="labels">Looking For</label></div><br>
                         <div class="col-md-12"><input placeholder="Example: Data Mining" [matChipInputFor]="taglist"
-                          [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" /></div>
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="add($event)" />
+                        </div>
                         <div *ngFor="let tag of Tags" class="col-md-12">
                           <div class="col-md-12"><label class="labels">{{tag}}</label></div><br>
                         </div><br><br>
 
                         <div class="col-md-12"><label class="labels">About me</label><input
-                            [(ngModel)]="researcher.about" type="text" class="form-control"
-                            placeholder="{{currentUserAboutMe}}" name="about">
+                            [(ngModel)]="researcher.about" required #about="ngModel" type="text" class="form-control"
+                            placeholder="{{currentUserAboutMe}}" name="about" [disabled]=myProfile>
 
                         </div>
                       </div>
                     </div>
                   </form>
+
                 </div>
 
               </ng-template>
@@ -158,14 +169,16 @@
                             src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
                             height="54">
                           <div class="media-body">
-                            <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
+                            <h5 class="media-heading mt-0"><a [routerLink]="['/viewprofile', researcher.id]"
+                                class="text-dark">{{researcher?.name}}</a></h5>
                             <p class="font-13"><b>Email:</b> <span><a href="#"
                                   class="text-muted">{{researcher?.email}}</a></span></p>
                             <p class="mb-0 font-13"><b>Expertise:</b>
                               <br><span class="text-muted">{{researcher?.expertise}}</span>
                             </p>
                             <div class="col-md-12 text-right">
-                              <button type="button" class="btn btn-primary" >Connect</button>
+                              <button type="button" class="btn btn-primary"
+                                [routerLink]="['/viewprofile', researcher.id, 'Connect']">View Profile</button>
                             </div>
                           </div>
                         </div>
@@ -177,8 +190,8 @@
                     <!-- Angular 8 pagination -->
                     <!-- <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons></mat-paginator> -->
                     <div class="clearfix"></div>
-
                   </div>
+
                   <div *ngFor="let researcher of researchers | paginate: { itemsPerPage: count, currentPage: p }"
                     class="col-md-12">
                     <div *ngFor="let tag of Tags" class="col-md-12">
@@ -196,7 +209,13 @@
                                 <br><span class="text-muted">{{researcher?.expertise}}</span>
                               </p>
                               <div class="col-md-12 text-right">
-                                <button type="button" class="btn btn-primary">Connect</button>
+                                <button type="button" class="btn btn-primary">Pending</button>
+                              </div>
+                              <div class="col-md-12 text-right">
+                                <button type="button" class="btn btn-primary">Accept</button>
+                              </div>
+                              <div class="col-md-12 text-right">
+                                <button type="button" class="btn btn-primary">Reject</button>
                               </div>
                             </div>
                           </div>
@@ -221,28 +240,62 @@
               <ng-template ngbNavContent>
                 <div class="row">
                   <div *ngFor="let researcher of researchers" class="col-md-12">
-                    <div class="search-item">
-                      <div class="media"><img class="d-flex mr-3 rounded-circle"
-                          src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
-                          height="54">
-                        <div class="media-body">
-                          <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
-                          <p class="font-13"><b>Email:</b> <span><a href="#"
-                                class="text-muted">{{researcher?.email}}</a></span></p>
-                          <p class="mb-0 font-13"><b>Expertise:</b>
-                            <br><span class="text-muted">{{researcher?.expertise}}</span>
-                          </p>
-                          <div class="col-md-12 text-right">
-                            <button type="button" class="btn btn-primary">disconnect</button>
+                    <div *ngFor="let connection of connections" class="col-md-12">
+                      <div *ngIf="researcher?.id == connection.receiverId && currentUserID == connection.senderId && 'Deleted' != connection.status">
+                        <div class="search-item">
+                          <div class="media"><img class="d-flex mr-3 rounded-circle"
+                              src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
+                              height="54">
+                            <div class="media-body">
+                              <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
+                              <p class="font-13"><b>Email:</b> <span><a href="#"
+                                    class="text-muted">{{researcher?.email}}</a></span></p>
+                              <p class="mb-0 font-13"><b>Expertise:</b>
+                                <br><span class="text-muted">{{researcher?.expertise}}</span>
+                              </p>
+                              <div class="col-md-12 text-right">
+                                <button type="button" class="btn btn-primary">{{connection.status}}</button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
+                      <div *ngIf="currentUserID == connection.receiverId && researcher?.id ==connection.senderId && 'Deleted' != connection.status">
+                        <div class="search-item">
+                          <div class="media"><img class="d-flex mr-3 rounded-circle"
+                              src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
+                              height="54">
+                            <div class="media-body">
+                              <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
+                              <p class="font-13"><b>Email:</b> <span><a href="#"
+                                    class="text-muted">{{researcher?.email}}</a></span></p>
+                              <p class="mb-0 font-13"><b>Expertise:</b>
+                                <br><span class="text-muted">{{researcher?.expertise}}</span>
+                              </p>
+                              <div *ngIf="'Disconnect' != connection.status">
+                              <div class="col-md-12 text-right">
+                                <button type="button" class="btn btn-primary"
+                                  [routerLink]="['/viewprofile', researcher.id, 'Confirm']">Confirm</button>
+                                <button type="button" class="btn btn-primary"
+                                  [routerLink]="['/viewprofile', researcher.id, 'Delete']">Delete</button>
+                              </div>
+                              </div>
+                              <div *ngIf="'Disconnect' == connection.status">
+                                <div class="col-md-12 text-right">
+                                  <button type="button" class="btn btn-primary"
+                                    [routerLink]="['/viewprofile', researcher.id, 'Disconnect']">Disconnect</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="clearfix"></div>
                     </div>
-                    <div class="clearfix"></div>
                   </div>
                 </div>
               </ng-template>
             </ng-container>
           </nav>
-
           <div [ngbNavOutlet]="nav" class="mt-2"></div>
