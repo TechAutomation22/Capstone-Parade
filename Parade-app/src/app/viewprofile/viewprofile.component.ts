@@ -6,7 +6,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ConnectionService } from '../ConnectionService';
 import { Connection } from '../Connection';
 
-
 //import ActivatedRoute in constructor()
 
 @Component({
@@ -38,7 +37,6 @@ export class ViewprofileComponent implements OnInit {
       this.getConnections();
     });
   }
-
 
   public getConnections(): void {
     this.connectionService.getConnections().subscribe(
@@ -73,54 +71,65 @@ export class ViewprofileComponent implements OnInit {
     element.textContent = text;
     element.disabled = true;
     for (var val of this.connections) {
+      console.log(
+        'UserValue' +
+          val.senderId +
+          this.connection.receiverId +
+          val.receiverId +
+          localStorage.getItem('_id')
+      );
 
-      console.log("UserValue" + val.senderId + this.connection.receiverId + val.receiverId + localStorage.getItem('_id'))
-
-     if (val.senderId == this.id && val.receiverId == localStorage.getItem('_id') )
-     {
-       console.log("Found Match")
-      this.connection.id = val.id;
-      console.log("Accept--->" + this.connection.id)
-      this.connectionService.patchConnectionStatus(this.connection.id,"Disconnect").subscribe(
-     (response: Connection[]) => {
-       this.connections = response;
-       console.log(response);
-     },
-     (error: HttpErrorResponse) => {
-       alert(error.message);
-     }
-   );
-
-     }
+      if (
+        val.senderId == this.id &&
+        val.receiverId == localStorage.getItem('_id')
+      ) {
+        console.log('Found Match');
+        this.connection.id = val.id;
+        console.log('Accept--->' + this.connection.id);
+        this.connectionService
+          .patchConnectionStatus(this.connection.id, 'Disconnect')
+          .subscribe(
+            (response: String) => {
+              console.log(response);
+            },
+            (error: HttpErrorResponse) => {
+              alert(error.message);
+            }
+          );
+      }
     }
-
   }
 
   setDisconnect(element, text) {
     element.textContent = text;
     element.disabled = true;
     for (var val of this.connections) {
+      console.log(
+        'UserValue' +
+          val.senderId +
+          this.connection.receiverId +
+          val.receiverId +
+          localStorage.getItem('_id')
+      );
 
-      console.log("UserValue" + val.senderId + this.connection.receiverId + val.receiverId + localStorage.getItem('_id'))
-
-     if (val.senderId == this.id && val.receiverId == localStorage.getItem('_id') )
-     {
-       console.log("Found Match")
-      this.connection.id = val.id;
-      console.log("Accept--->" + this.connection.id)
-      this.connectionService.patchConnectionStatus(this.connection.id,"Deleted").subscribe(
-     (response: Connection[]) => {
-       this.connections = response;
-       console.log(response);
-     },
-     (error: HttpErrorResponse) => {
-       alert(error.message);
-     }
-   );
-
-     }
+      if (
+        val.senderId == this.id &&
+        val.receiverId == localStorage.getItem('_id')
+      ) {
+        console.log('Found Match');
+        this.connection.id = val.id;
+        console.log('Accept--->' + this.connection.id);
+        this.connectionService.deleteConnection(this.connection.id).subscribe(
+          (response: Connection[]) => {
+            this.connections = response;
+            console.log(response);
+          },
+          (error: HttpErrorResponse) => {
+            alert(error.message);
+          }
+        );
+      }
     }
-
   }
 
   public getUserProfile(): void {

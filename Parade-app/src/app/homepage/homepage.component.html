@@ -169,7 +169,7 @@
                             src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
                             height="54">
                           <div class="media-body">
-                            <h5 class="media-heading mt-0"><a [routerLink]="['/viewprofile', researcher.id]"
+                            <h5 class="media-heading mt-0"><a [routerLink]="['/viewprofile', researcher.id, '']"
                                 class="text-dark">{{researcher?.name}}</a></h5>
                             <p class="font-13"><b>Email:</b> <span><a href="#"
                                   class="text-muted">{{researcher?.email}}</a></span></p>
@@ -178,7 +178,7 @@
                             </p>
                             <div class="col-md-12 text-right">
                               <button type="button" class="btn btn-primary"
-                                [routerLink]="['/viewprofile', researcher.id, 'Connect']">View Profile</button>
+                                [routerLink]="['/viewprofile', researcher.id, 'Connect']">Connect</button>
                             </div>
                           </div>
                         </div>
@@ -201,7 +201,8 @@
                               src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
                               height="54">
                             <div class="media-body">
-                              <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a>
+                              <h5> class="media-heading mt-0"><a [routerLink]="['/viewprofile', researcher.id, '']"
+                                class="text-dark">{{researcher?.name}}</a>
                               </h5>
                               <p class="font-13"><b>Email:</b> <span><a href="#"
                                     class="text-muted">{{researcher?.email}}</a></span></p>
@@ -247,7 +248,8 @@
                               src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
                               height="54">
                             <div class="media-body">
-                              <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
+                              <h5 class="media-heading mt-0"><a [routerLink]="['/viewprofile', researcher.id, '']"
+                                class="text-dark">{{researcher?.name}}</a></h5>
                               <p class="font-13"><b>Email:</b> <span><a href="#"
                                     class="text-muted">{{researcher?.email}}</a></span></p>
                               <p class="mb-0 font-13"><b>Expertise:</b>
@@ -266,7 +268,8 @@
                               src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Generic placeholder image"
                               height="54">
                             <div class="media-body">
-                              <h5 class="media-heading mt-0"><a href="#" class="text-dark">{{researcher?.name}}</a></h5>
+                              <h5 class="media-heading mt-0"><a [routerLink]="['/viewprofile', researcher.id, '']"
+                                class="text-dark">{{researcher?.name}}</a></h5>
                               <p class="font-13"><b>Email:</b> <span><a href="#"
                                     class="text-muted">{{researcher?.email}}</a></span></p>
                               <p class="mb-0 font-13"><b>Expertise:</b>

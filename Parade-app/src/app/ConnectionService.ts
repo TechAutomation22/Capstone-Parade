@@ -24,4 +24,8 @@ export class ConnectionService {
     return this.http.patch<any>('http://localhost:8084/connect/' + id + '/' + status, '');
   }
 
+  public deleteConnection(id:any): Observable<any> {
+    return this.http.delete<any>('http://localhost:8084/connect/delete/' + id );
+  }
+
 }
